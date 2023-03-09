@@ -66,6 +66,11 @@
       const chatInput = document.getElementById('chat-input');
       const sendButton = document.getElementById('send-button');
 
+      // Initialize messages list with system message
+      let messages = [
+        {"role": "system", "content": "Sei un assistente virtuale chiamata JOI e parli italiano."}
+      ];
+
       function sendMessage() {
         const messageText = chatInput.value.trim();
 
@@ -75,8 +80,34 @@
           messageContainer.textContent = messageText;
           chatArea.appendChild(messageContainer);
 
-          chatInput.value = '';
-          chatArea.scrollTop = chatArea.scrollHeight;
+          // Add user message to messages list
+          messages.push({"role": "user", "content": messageText});
+
+          // Call server to get response
+          fetch('/api/get_response', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({messages: messages})
+          })
+          .then(response => response.json())
+          .then(data => {
+            const newMessage = data.new_message;
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message bot-message';
+            messageContainer.textContent = newMessage.content;
+            chatArea.appendChild(messageContainer);
+
+            // Add bot message to messages list
+            messages.push(newMessage);
+
+            chatInput.value = '';
+            chatArea.scrollTop = chatArea.scrollHeight;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
         }
       }
 

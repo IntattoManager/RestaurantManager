@@ -1,1 +1,91 @@
-Hello world!
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ChatGPT</title>
+    <style>
+      /* Set a fixed height for the chat area */
+      #chat-area {
+        height: 300px;
+        overflow-y: scroll;
+      }
+
+      /* Style the chat messages */
+      .message {
+        margin-bottom: 10px;
+        font-family: Arial, sans-serif;
+      }
+
+      .user-message {
+        color: blue;
+      }
+
+      .bot-message {
+        color: green;
+      }
+
+      /* Style the chat input and send button */
+      #chat-input {
+        width: calc(100% - 80px);
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px 0 0 5px;
+      }
+
+      #send-button {
+        width: 80px;
+        padding: 10px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+      }
+
+      /* Style the container for the chat input and send button */
+      #chat-input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-area"></div>
+    <div id="chat-input-container">
+      <input type="text" id="chat-input" placeholder="Type your message...">
+      <button id="send-button">Send</button>
+    </div>
+
+    <script>
+      const chatArea = document.getElementById('chat-area');
+      const chatInput = document.getElementById('chat-input');
+      const sendButton = document.getElementById('send-button');
+
+      function sendMessage() {
+        const messageText = chatInput.value.trim();
+
+        if (messageText !== '') {
+          const messageContainer = document.createElement('div');
+          messageContainer.className = 'message user-message';
+          messageContainer.textContent = messageText;
+          chatArea.appendChild(messageContainer);
+
+          chatInput.value = '';
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }
+      }
+
+      sendButton.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    </script>
+  </body>
+</html>
